@@ -1,3 +1,5 @@
+"use client";
+
 import { MouseEvent, useState } from "react";
 
 export type OptionType<Key extends string | number> = {
@@ -10,39 +12,44 @@ export type Arg<Key extends string | number> = {
   option: OptionType<Key>;
 };
 
-export type SelectProps<Key extends string | number> = {
+type SelectType<Key extends string | number> = {
   options: OptionType<Key>[];
   option: OptionType<Key>;
-  onChange: (args: Arg<Key>) => void;
+  onChange: ({ option, event }: Arg<Key>) => void;
 };
 
 export const Select = <Key extends string | number>({
   option,
   options,
   onChange,
-}: SelectProps<Key>) => {
-  const [isOpen, setIsOpen] = useState(false);
+}: SelectType<Key>) => {
+  const [isOpenInner, setIsOpenInner] = useState(false);
 
   const handleSelect = () => {
-    setIsOpen((prev) => !prev);
+    setIsOpenInner((prev) => !prev);
   };
 
-  const handleOptionClick =
-    (option: OptionType<Key>) => (event: MouseEvent<HTMLDivElement>) => {
-      onChange({ option, event });
-      setIsOpen(false);
+  const onClick =
+    (selectedOption: OptionType<Key>) =>
+    (event: MouseEvent<HTMLDivElement>) => {
+      onChange({
+        event,
+        option: selectedOption,
+      });
     };
 
   return (
     <div>
       <button onClick={handleSelect}>{option.value}</button>
-      {isOpen && (
+
+      {isOpenInner && (
         <div>
-          {options.map((option) => (
-            <div key={option.key} onClick={handleOptionClick(option)}>
-              {option.value}
-            </div>
-          ))}
+          {options.length &&
+            options.map((option) => (
+              <div key={option.key} onClick={onClick(option)}>
+                {option.value}
+              </div>
+            ))}
         </div>
       )}
     </div>
