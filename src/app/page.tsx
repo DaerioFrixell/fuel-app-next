@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { Arg, OptionType, Select } from "./Select";
-
-const options: OptionType<string | number>[] = [
+const stringOptions: OptionType<string>[] = [
   {
     key: "1",
     value: "one",
@@ -19,17 +18,21 @@ const options: OptionType<string | number>[] = [
 ];
 
 export default function Home() {
-  const [optionValue, setOptionValue] = useState(options[0]);
+  const [stringOption, setStringOptions] = useState(stringOptions[0]);
 
-  const onChange = ({ event, option }: Arg) => {
-    console.log(option);
-    setOptionValue(option);
+  const onChangeString = ({ option }: Arg<string>) => {
+    setStringOptions(option);
   };
+
   return (
     <div>
       <main>create with next</main>
 
-      <Select option={optionValue} options={options} onChange={onChange} />
+      <Select
+        options={stringOptions}
+        option={stringOption}
+        onChange={onChangeString}
+      />
     </div>
   );
 }

@@ -1,57 +1,48 @@
-"use client";
-
 import { MouseEvent, useState } from "react";
 
-type OptionKeyType = string | number;
-
-export type OptionType<Key extends OptionKeyType> = {
+export type OptionType<Key extends string | number> = {
   key: Key;
   value: string;
 };
 
-export type Arg = {
+export type Arg<Key extends string | number> = {
   event: MouseEvent<HTMLDivElement>;
-  option: OptionType<string | number>;
+  option: OptionType<Key>;
 };
 
-type SelectType<Key extends OptionKeyType> = {
+export type SelectProps<Key extends string | number> = {
   options: OptionType<Key>[];
   option: OptionType<Key>;
-  onChange: ({ option, event }: Arg) => void;
+  onChange: (args: Arg<Key>) => void;
 };
 
-export const Select = <Key extends OptionKeyType>({
+export const Select = <Key extends string | number>({
   option,
   options,
   onChange,
-}: SelectType<Key>) => {
-  const [isOpenInner, setIsOpenInner] = useState(false);
+}: SelectProps<Key>) => {
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSelect = () => {
-    setIsOpenInner((prev) => !prev);
+    setIsOpen((prev) => !prev);
   };
 
-  const onClick =
-    (selectedOption: OptionType<Key>) =>
-    (event: MouseEvent<HTMLDivElement>) => {
-      onChange({
-        event,
-        option: selectedOption,
-      });
+  const handleOptionClick =
+    (option: OptionType<Key>) => (event: MouseEvent<HTMLDivElement>) => {
+      onChange({ option, event });
+      setIsOpen(false);
     };
 
   return (
     <div>
       <button onClick={handleSelect}>{option.value}</button>
-
-      {isOpenInner && (
+      {isOpen && (
         <div>
-          {options.length &&
-            options.map((option) => (
-              <div key={option.key} onClick={onClick(option)}>
-                {option.value}
-              </div>
-            ))}
+          {options.map((option) => (
+            <div key={option.key} onClick={handleOptionClick(option)}>
+              {option.value}
+            </div>
+          ))}
         </div>
       )}
     </div>
