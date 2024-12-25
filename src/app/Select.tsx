@@ -2,25 +2,23 @@
 
 import { MouseEvent, useState } from "react";
 
-type OptionKeyType = string | number;
-
-export type OptionType<Key extends OptionKeyType> = {
+export type OptionType<Key extends string | number> = {
   key: Key;
   value: string;
 };
 
-export type Arg = {
+export type Arg<Key extends string | number> = {
   event: MouseEvent<HTMLDivElement>;
-  option: OptionType<string | number>;
+  option: OptionType<Key>;
 };
 
-type SelectType<Key extends OptionKeyType> = {
+type SelectType<Key extends string | number> = {
   options: OptionType<Key>[];
   option: OptionType<Key>;
-  onChange: ({ option, event }: Arg) => void;
+  onChange: ({ option, event }: Arg<Key>) => void;
 };
 
-export const Select = <Key extends OptionKeyType>({
+export const Select = <Key extends string | number>({
   option,
   options,
   onChange,
