@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Arg, OptionType, Select } from "./Select";
+import { Select } from "@/shared/select";
+import { OptionType, Arg } from "@/shared/select/type";
+
 const stringOptions: OptionType<string>[] = [
   {
     key: "1",
