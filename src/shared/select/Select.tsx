@@ -1,16 +1,7 @@
 "use client";
 
 import { MouseEvent, useState } from "react";
-
-export type OptionType<Key extends string | number> = {
-  key: Key;
-  value: string;
-};
-
-export type Arg<Key extends string | number> = {
-  event: MouseEvent<HTMLDivElement>;
-  option: OptionType<Key>;
-};
+import { Arg, OptionType } from "./type";
 
 type SelectType<Key extends string | number> = {
   options: OptionType<Key>[];
